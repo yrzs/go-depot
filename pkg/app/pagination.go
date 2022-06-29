@@ -2,8 +2,8 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
-	"tour/global"
-	"tour/pkg/convert"
+	"go-depot/global"
+	"go-depot/pkg/convert"
 )
 
 /**

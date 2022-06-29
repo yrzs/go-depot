@@ -1,11 +1,11 @@
 package main
 
 import (
+	"go-depot/global"
+	"go-depot/internal/routers"
+	"go-depot/setup"
 	"log"
 	"net/http"
-	"tour/global"
-	"tour/internal/routers"
-	"tour/setup"
 )
 
 /*

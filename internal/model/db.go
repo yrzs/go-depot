@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"tour/global"
-	"tour/pkg/setting"
+	"go-depot/global"
+	"go-depot/pkg/setting"
 )
 
 func NewDB(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {

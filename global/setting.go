@@ -1,8 +1,8 @@
 package global
 
 import (
-	"tour/pkg/logger"
-	"tour/pkg/setting"
+	"go-depot/pkg/logger"
+	"go-depot/pkg/setting"
 )
 
 var (

@@ -4,10 +4,10 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 	"log"
 	"time"
-	"tour/global"
-	"tour/internal/model"
-	"tour/pkg/logger"
-	"tour/pkg/setting"
+	"go-depot/global"
+	"go-depot/internal/model"
+	"go-depot/pkg/logger"
+	"go-depot/pkg/setting"
 )
 
 /**

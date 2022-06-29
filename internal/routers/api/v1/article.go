@@ -2,8 +2,8 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"tour/pkg/app"
-	"tour/pkg/errcode"
+	"go-depot/pkg/app"
+	"go-depot/pkg/errcode"
 )
 
 type Article struct{}

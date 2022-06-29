@@ -3,7 +3,7 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"tour/pkg/errcode"
+	"go-depot/pkg/errcode"
 )
 
 type Response struct {
