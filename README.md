@@ -1,1 +1,1 @@
-**A golang kit framework -- from <<Go 语言编程之旅>>**
+**A golang kit framework**
