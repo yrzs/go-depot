@@ -30,6 +30,18 @@ type DatabaseSettingS struct {
 	MaxOpenConns int
 }
 
+type ApiClientSettingS struct {
+	AccessTokenValidity  bool
+	AccessTokenExpire    time.Duration
+	RefreshTokenValidity bool
+	RefreshTokenExpire   time.Duration
+	HttpSignValidity     bool
+	HttpSignAccount      struct {
+		Key    string
+		Secret string
+	}
+}
+
 func (s *Setting) ReadSection(k string, v interface{}) error {
 	err := s.vp.UnmarshalKey(k, v)
 	if err != nil {

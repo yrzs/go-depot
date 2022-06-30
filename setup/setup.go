@@ -1,13 +1,13 @@
 package setup
 
 import (
-	"gopkg.in/natefinch/lumberjack.v2"
-	"log"
-	"time"
 	"go-depot/global"
 	"go-depot/internal/model"
 	"go-depot/pkg/logger"
 	"go-depot/pkg/setting"
+	"gopkg.in/natefinch/lumberjack.v2"
+	"log"
+	"time"
 )
 
 /**
@@ -32,6 +32,10 @@ func Setting() error {
 	}
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
+	err = s.ReadSection("ApiClient", &global.ApiClientSetting)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

@@ -1,1 +1,6 @@
 2022/06/29 16:19:59 {"callers":["/golangApp/tour/main.go: 24 main.init.0"],"level":"fatal","message":"http server err :listen tcp :8080: bind: address already in use","time":1656490799006476378}
+2022/06/29 18:25:49 {"callers":["/golangApp/go-depot/main.go: 24 main.init.0"],"level":"error","message":"app.BindAndValid errs: [Key: 'State' Error:Field validation for 'State' failed on the 'oneof' tag]","time":1656498349557873205}
+2022/06/29 18:31:00 {"callers":["/golangApp/go-depot/main.go: 24 main.init.0"],"level":"error","message":"app.BindAndValid errs: [State必须是[0 1]中的一个]","time":1656498660007551514}
+2022/06/29 18:31:05 {"callers":["/golangApp/go-depot/main.go: 24 main.init.0"],"level":"error","message":"app.BindAndValid errs: [State必须是[0 1]中的一个]","time":1656498665291857681}
+2022/06/29 18:32:20 {"callers":["/golangApp/go-depot/main.go: 24 main.init.0"],"level":"error","message":"app.BindAndValid errs: [State必须是[0 1]中的一个]","time":1656498740742095590}
+2022/06/30 09:22:14 {"callers":["/golangApp/go-depot/main.go: 24 main.init.0"],"level":"error","message":"app.BindAndValid errs: [State必须是[0 1]中的一个]","time":1656552134198706278}

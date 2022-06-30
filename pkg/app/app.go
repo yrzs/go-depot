@@ -2,8 +2,9 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"go-depot/pkg/errcode"
+	"net/http"
+	"time"
 )
 
 type Response struct {
@@ -38,11 +39,16 @@ func (r *Response) ToResponseList(list interface{}, totalRows int) {
 			PageSize:  GetPageSize(r.Ctx),
 			TotalRows: totalRows,
 		},
+		"timestamp": time.Now().Unix(),
 	})
 }
 
 func (r *Response) ToErrorResponse(err *errcode.Error) {
-	response := gin.H{"code": err.Code(), "msg": err.Msg()}
+	response := gin.H{
+		"code":      err.Code(),
+		"msg":       err.Msg(),
+		"timestamp": time.Now().Unix(),
+	}
 	details := err.Details()
 	if len(details) > 0 {
 		response["details"] = details
