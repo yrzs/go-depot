@@ -2,23 +2,22 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-depot/global"
 	"go-depot/internal/middleware"
 	v1 "go-depot/internal/routers/api/v1"
 )
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
-	// gin Logger
-	r.Use(gin.Logger())
-	// 自定义日志中间件
-	r.Use(middleware.AccessLog())
-	// gin recovery
-	r.Use(gin.Recovery())
-	// 自定义Recovery中间件
-	r.Use(middleware.Recovery())
-	// i18n中间件
-	r.Use(middleware.Translations())
-
+	if global.ServerSetting.RunMode == "debug" {
+		r.Use(gin.Logger())   // gin Logger
+		r.Use(gin.Recovery()) // gin recovery
+	} else {
+		r.Use(middleware.AccessLog()) // 自定义日志中间件
+		r.Use(middleware.Recovery())  // 自定义Recovery中间件
+	}
+	r.Use(middleware.Translations())                                          // i18n中间件
+	r.Use(middleware.ContextTimeout(global.AppSetting.DefaultContextTimeout)) //超时控制
 	article := v1.NewArticle()
 	tag := v1.NewTag()
 	apiV1 := r.Group("/api/v1")

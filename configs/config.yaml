@@ -9,6 +9,7 @@ App:
   LogSavePath: storage/logs
   LogFileName: app
   LogFileExt: .log
+  DefaultContextTimeout: 5
 Database:
   DBType: mysql
   Username: root
