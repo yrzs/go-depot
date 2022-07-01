@@ -5,7 +5,16 @@ import (
 	"go-depot/global"
 	"go-depot/internal/middleware"
 	v1 "go-depot/internal/routers/api/v1"
+	"go-depot/pkg/limiter"
+	"time"
 )
+
+var methodLimiters = limiter.NewMethodLimiter().AddBuckets(limiter.LimiterBucketRule{
+	Key:          "/api",     //自定义键值对名称
+	FillInterval: time.Second, //间隔多久时间放 N 个令牌
+	Capacity:     10,        //令牌桶的容量
+	Quantum:      10,        //每次到达间隔时间后所放的具体令牌数量
+})
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
@@ -18,6 +27,7 @@ func NewRouter() *gin.Engine {
 	}
 	r.Use(middleware.Translations())                                          // i18n中间件
 	r.Use(middleware.ContextTimeout(global.AppSetting.DefaultContextTimeout)) //超时控制
+	r.Use(middleware.RateLimiter(methodLimiters))                             //限流控制
 	article := v1.NewArticle()
 	tag := v1.NewTag()
 	apiV1 := r.Group("/api/v1")
