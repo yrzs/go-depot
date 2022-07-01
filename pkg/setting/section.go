@@ -31,11 +31,13 @@ type DatabaseSettingS struct {
 }
 
 type ApiClientSettingS struct {
+	AccessTokenIdentity  string
 	AccessTokenValidity  bool
-	AccessTokenExpire    time.Duration
+	AccessTokenExpire    int
 	RefreshTokenValidity bool
-	RefreshTokenExpire   time.Duration
+	RefreshTokenExpire   int
 	HttpSignValidity     bool
+	HttpSignExpire       int64
 	HttpSignAccount      struct {
 		Key    string
 		Secret string

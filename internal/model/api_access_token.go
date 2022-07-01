@@ -1,5 +1,7 @@
 package model
 
+import "github.com/jinzhu/gorm"
+
 type ApiAccessToken struct {
 	ID           int    `gorm:"primary_key" json:"id"` //
 	MerchantId   int    `json:"merchant_id"`           //商户id
@@ -15,4 +17,13 @@ type ApiAccessToken struct {
 
 func (a ApiAccessToken) TableName() string {
 	return "api_access_token"
+}
+
+/**
+get info by access_token
+*/
+func (a ApiAccessToken) GetByAccessToken(db *gorm.DB, at string) (*ApiAccessToken, error) {
+	var ac = &ApiAccessToken{}
+	err := db.Where("access_token = ? and status = 1", at).First(&ac).Error
+	return ac, err
 }

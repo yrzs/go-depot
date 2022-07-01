@@ -22,6 +22,12 @@ func (s StrTo) MustInt() int {
 	return v
 }
 
+func (s StrTo) MustInt64() int64 {
+	v, _ := s.Int()
+	return int64(v)
+}
+
+
 func (s StrTo) UInt32() (uint32, error) {
 	v, err := strconv.Atoi(s.String())
 	return uint32(v), err

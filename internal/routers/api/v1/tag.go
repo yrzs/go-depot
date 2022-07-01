@@ -44,6 +44,7 @@ func (t Tag) List(c *gin.Context) {
 		response.ToErrorResponse(errcode.ErrorGetTagListFail)
 		return
 	}
+
 	response.ToResponseList(tags, totalRows)
 	return
 }

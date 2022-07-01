@@ -16,6 +16,10 @@ func NewRouter() *gin.Engine {
 	article := v1.NewArticle()
 	tag := v1.NewTag()
 	apiV1 := r.Group("/api/v1")
+	// 鉴权中间件
+	apiV1.Use(middleware.Auth())
+	// 验签中间件
+	apiV1.Use(middleware.Sign())
 	{
 		apiV1.POST("/tags", tag.Create)
 		apiV1.DELETE("/tags/:id", tag.Delete)

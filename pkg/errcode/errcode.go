@@ -6,8 +6,8 @@ import (
 )
 
 type Error struct {
-	code int `json:"code"`
-	msg string `json:"msg"`
+	code    int      `json:"code"`
+	msg     string   `json:"msg"`
 	details []string `json:"details"`
 }
 
@@ -65,7 +65,9 @@ func (e *Error) StatusCode() int {
 		fallthrough
 	case UnauthorizedTokenError.Code():
 		fallthrough
-	case UnauthorizedTokenGenerate.Code():
+	case SignError.Code():
+		fallthrough
+	case SignTimeOut.Code():
 		fallthrough
 	case UnauthorizedTokenTimeout.Code():
 		return http.StatusUnauthorized

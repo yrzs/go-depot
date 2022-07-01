@@ -21,12 +21,14 @@ Database:
   MaxIdleConns: 10
   MaxOpenConns: 30
 ApiClient: # api配置
+  AccessTokenIdentity: x-api-key
   AccessTokenValidity: true
   AccessTokenExpire: 63072000
   RefreshTokenValidity: true
   RefreshTokenExpire: 2592000
   # 验签
-  HttpSignValidity: true
+  HttpSignValidity: false
+  HttpSignExpire: 60
   HttpSignAccount:
     Key: f29388d280554040
     Secret: 756fcebffbe983d7
