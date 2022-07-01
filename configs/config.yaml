@@ -32,3 +32,8 @@ ApiClient: # api配置
   HttpSignAccount:
     Key: f29388d280554040
     Secret: 756fcebffbe983d7
+Wechat: # 微信配置
+  Work: # 企微
+    WebHook:
+      EndPoint: https://qyapi.weixin.qq.com/cgi-bin/webhook/send
+      Key: c0943728-906d-4151-b95f-9391caebfe2a

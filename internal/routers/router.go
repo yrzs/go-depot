@@ -8,9 +8,15 @@ import (
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
+	// gin Logger
 	r.Use(gin.Logger())
+	// 自定义日志中间件
+	r.Use(middleware.AccessLog())
+	// gin recovery
 	r.Use(gin.Recovery())
-	// 注册中间件
+	// 自定义Recovery中间件
+	r.Use(middleware.Recovery())
+	// i18n中间件
 	r.Use(middleware.Translations())
 
 	article := v1.NewArticle()

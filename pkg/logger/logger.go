@@ -109,7 +109,7 @@ func (l Level) String() string {
 func (l *Logger) JSONFormat(level Level, message string) map[string]interface{} {
 	data := make(Fields, len(l.fields)+4)
 	data["level"] = level.String()
-	data["time"] = time.Now().Local().UnixNano()
+	data["timestamp"] = time.Now().Local().Unix()
 	data["message"] = message
 	data["callers"] = l.callers
 	if len(l.fields) > 0 {
@@ -164,4 +164,50 @@ func (l *Logger) Error(v ...interface{}) {
 
 func (l *Logger) Errorf(format string, v ...interface{}) {
 	l.Output(LevelError, fmt.Sprintf(format, v...))
+}
+
+/*
+seed log by wechat webhook
+*/
+func (l *Logger) Info4Webhook(v ...interface{}) string {
+	return l.Output4Webhook(LevelInfo, fmt.Sprint(v...))
+}
+
+func (l *Logger) Infof4Webhook(format string, v ...interface{}) string {
+	return l.Output4Webhook(LevelInfo, fmt.Sprintf(format, v...))
+}
+
+func (l *Logger) Fatal4Webhook(v ...interface{}) string {
+	return l.Output4Webhook(LevelFatal, fmt.Sprint(v...))
+}
+
+func (l *Logger) Fatalf4Webhook(format string, v ...interface{}) string {
+	return l.Output4Webhook(LevelFatal, fmt.Sprintf(format, v...))
+}
+
+func (l *Logger) Error4Webhook(v ...interface{}) string {
+	return l.Output4Webhook(LevelError, fmt.Sprint(v...))
+}
+func (l *Logger) Errorf4Webhook(format string, v ...interface{}) string {
+	return l.Output4Webhook(LevelError, fmt.Sprintf(format, v...))
+}
+
+func (l *Logger) Output4Webhook(level Level, message string) string {
+	body, _ := json.Marshal(l.JSONFormat(level, message))
+	content := string(body)
+	switch level {
+	case LevelDebug:
+		return "--debug-- : " + content
+	case LevelInfo:
+		return "--info-- : " + content
+	case LevelWarn:
+		return "--warn-- : " + content
+	case LevelError:
+		return "--error-- : " + content
+	case LevelFatal:
+		return "--fatal-- : " + content
+	case LevelPanic:
+		return "--panic-- : " + content
+	}
+	return content
 }

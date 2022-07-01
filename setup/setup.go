@@ -36,6 +36,10 @@ func Setting() error {
 	if err != nil {
 		return err
 	}
+	err = s.ReadSection("Wechat", &global.WechatSetting)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

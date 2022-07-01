@@ -44,6 +44,15 @@ type ApiClientSettingS struct {
 	}
 }
 
+type WechatSettingS struct {
+	Work struct {
+		WebHook struct {
+			EndPoint string
+			Key      string
+		}
+	}
+}
+
 func (s *Setting) ReadSection(k string, v interface{}) error {
 	err := s.vp.UnmarshalKey(k, v)
 	if err != nil {

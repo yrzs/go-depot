@@ -10,5 +10,6 @@ var (
 	AppSetting       *setting.AppSettingS
 	DatabaseSetting  *setting.DatabaseSettingS
 	ApiClientSetting *setting.ApiClientSettingS
+	WechatSetting    *setting.WechatSettingS
 	Logger           *logger.Logger
 )
