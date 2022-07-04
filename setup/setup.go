@@ -5,6 +5,7 @@ import (
 	"go-depot/internal/model"
 	"go-depot/pkg/logger"
 	"go-depot/pkg/setting"
+	"go-depot/pkg/tracer"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"log"
 	"time"
@@ -70,5 +71,20 @@ func Logger() error {
 		MaxAge:    10,
 		LocalTime: true,
 	}, "", log.LstdFlags).WithCaller(2)
+	return nil
+}
+
+/**
+setup tracer(jaeger)
+*/
+func Tracer() error {
+	jaegerTracer, _, err := tracer.NewJaegerTracer(
+		global.AppSetting.OpenTracing.ServiceName,
+		global.AppSetting.OpenTracing.AgentHost+global.AppSetting.OpenTracing.AgentPort,
+	)
+	if err != nil {
+		return err
+	}
+	global.Tracer = jaegerTracer
 	return nil
 }

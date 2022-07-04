@@ -25,6 +25,10 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupLogger err: %v", err)
 	}
+	err = setup.Tracer()
+	if err != nil {
+		log.Fatalf("init.setupTracer err: %v", err)
+	}
 }
 
 func main() {
@@ -38,6 +42,6 @@ func main() {
 	}
 	err := s.ListenAndServe()
 	if err != nil {
-		global.Logger.Fatalf("main.httpServer err :%v", err)
+		global.Logger.Fatalf(nil,"main.httpServer err :%v", err)
 	}
 }

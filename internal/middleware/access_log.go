@@ -42,7 +42,7 @@ func AccessLog() gin.HandlerFunc {
 			"response": bodyWrite.body.String(),       //当前的请求结果响应主体。
 		}
 		// write log
-		global.Logger.WithFields(fields).Infof("access log: method: %s, status_code: %d, begin_time: %d, end_time: %d",
+		global.Logger.WithFields(fields).Infof(ctx, "access log: method: %s, status_code: %d, begin_time: %d, end_time: %d", //Context传入日志方法中
 			ctx.Request.Method, //当前的调用方法。
 			bodyWrite.Status(), //当前的响应结果状态码。
 			beginTime,

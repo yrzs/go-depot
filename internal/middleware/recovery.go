@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-depot/global"
 	"go-depot/pkg/app"
@@ -17,12 +18,21 @@ func Recovery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				global.Logger.WithCallersFrames().Errorf("panic recover err: %v", err)
+				global.Logger.WithCallersFrames().Errorf(c, "panic recover err: %v", err)
 				app.NewResponse(c).ToErrorResponse(errcode.ServerError)
 				// send wechat webhook
-				Go(func() { // 异步发送
-					wechat.SendHookTextMsg(global.Logger.Errorf4Webhook("panic recover err: %v", err) + " -- check the app logs view stack info")
-				})
+				go func(c *gin.Context) { // 异步发送
+					if err := recover(); err != nil {
+						global.Logger.Errorf(c, "wechat.webhook.SendTextMsg err: %v", err)
+					}
+					wechat.SendHookTextMsg(
+						fmt.Sprintf(
+							"%s -- check the app logs view stack info or see http://%s:16686",
+							global.Logger.Errorf4Webhook(c, "panic recover err: %v", err),
+							global.AppSetting.OpenTracing.AgentHost,
+						),
+					)
+				}(c)
 				c.Abort()
 			}
 		}()
@@ -36,13 +46,13 @@ func Recovery() gin.HandlerFunc {
 造成 goroutine 泄漏的主要原因就是 goroutine 中造成了阻塞，并且没有外部手段控制它退出
 尽量避免在请求中直接启动 goroutine 来处理问题,而应该通过启动 worker 来进行消费，这样可以避免由于请求量过大，而导致大量创建 goroutine 从而导致 oom，当然如果请求量本身非常小，那当我没说
 */
-func Go(f func()) {
-	go func() {
-		defer func() {
-			if err := recover(); err != nil {
-				global.Logger.Errorf("wechat.webhook.SendTextMsg err: %v", err)
-			}
-		}()
-		f()
-	}()
-}
+//func Go(f func()) {
+//	go func() {
+//		defer func() {
+//			if err := recover(); err != nil {
+//				global.Logger.Errorf(c, "wechat.webhook.SendTextMsg err: %v", err)
+//			}
+//		}()
+//		f()
+//	}()
+//}

@@ -24,7 +24,7 @@ func (t Tag) List(c *gin.Context) {
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {
-		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
+		global.Logger.Errorf(c,"app.BindAndValid errs: %v", errs)
 		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
 	}
@@ -33,14 +33,14 @@ func (t Tag) List(c *gin.Context) {
 	pager := app.Pager{Page: app.GetPage(c), PageSize: app.GetPageSize(c)}
 	totalRows, err := svc.CountTag(&service.CountTagRequest{Name: param.Name, State: param.State})
 	if err != nil {
-		global.Logger.Errorf("svc.CountTag err: %v", err)
+		global.Logger.Errorf(c,"svc.CountTag err: %v", err)
 		response.ToErrorResponse(errcode.ErrorCountTagFail)
 		return
 	}
 
 	tags, err := svc.GetTagList(&param, &pager)
 	if err != nil {
-		global.Logger.Errorf("svc.GetTagList err: %v", err)
+		global.Logger.Errorf(c,"svc.GetTagList err: %v", err)
 		response.ToErrorResponse(errcode.ErrorGetTagListFail)
 		return
 	}

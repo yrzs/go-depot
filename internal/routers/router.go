@@ -18,6 +18,7 @@ var methodLimiters = limiter.NewMethodLimiter().AddBuckets(limiter.LimiterBucket
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
+	r.Use(middleware.Tracing()) // 链路追踪中间件
 	if global.ServerSetting.RunMode == "debug" {
 		r.Use(gin.Logger())   // gin Logger
 		r.Use(gin.Recovery()) // gin recovery
@@ -26,8 +27,8 @@ func NewRouter() *gin.Engine {
 		r.Use(middleware.Recovery())  // 自定义Recovery中间件
 	}
 	r.Use(middleware.Translations())                                          // i18n中间件
-	r.Use(middleware.ContextTimeout(global.AppSetting.DefaultContextTimeout)) //超时控制
-	r.Use(middleware.RateLimiter(methodLimiters))                             //限流控制
+	r.Use(middleware.ContextTimeout(global.AppSetting.DefaultContextTimeout)) // 超时控制
+	r.Use(middleware.RateLimiter(methodLimiters))                             // 限流控制
 	article := v1.NewArticle()
 	tag := v1.NewTag()
 	apiV1 := r.Group("/api/v1")

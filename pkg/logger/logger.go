@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io"
 	"log"
 	"runtime"
@@ -68,6 +69,22 @@ func (l *Logger) WithCaller(skip int) *Logger {
 		ll.callers = []string{fmt.Sprintf("%s: %d %s", file, line, f.Name())}
 	}
 	return ll
+}
+
+/**
+日志追踪
+*/
+func (l *Logger) WithTrace() *Logger {
+	ginCtx, ok := l.ctx.(*gin.Context)
+	if ok {
+		return l.WithFields(
+			Fields{
+				"trace_id": ginCtx.MustGet("X-Trace-ID"),
+				"span_id":  ginCtx.MustGet("X-Span-ID"),
+			},
+		)
+	}
+	return l
 }
 
 func (l *Logger) WithCallersFrames() *Logger {
@@ -142,54 +159,54 @@ func (l *Logger) Output(level Level, message string) {
 	}
 }
 
-func (l *Logger) Info(v ...interface{}) {
-	l.Output(LevelInfo, fmt.Sprint(v...))
+func (l *Logger) Info(ctx context.Context, v ...interface{}) {
+	l.WithContext(ctx).WithTrace().Output(LevelInfo, fmt.Sprint(v...))
 }
 
-func (l *Logger) Infof(format string, v ...interface{}) {
-	l.Output(LevelInfo, fmt.Sprintf(format, v...))
+func (l *Logger) Infof(ctx context.Context, format string, v ...interface{}) {
+	l.WithContext(ctx).WithTrace().Output(LevelInfo, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Fatal(v ...interface{}) {
-	l.Output(LevelFatal, fmt.Sprint(v...))
+func (l *Logger) Fatal(ctx context.Context, v ...interface{}) {
+	l.WithContext(ctx).WithTrace().Output(LevelFatal, fmt.Sprint(v...))
 }
 
-func (l *Logger) Fatalf(format string, v ...interface{}) {
-	l.Output(LevelFatal, fmt.Sprintf(format, v...))
+func (l *Logger) Fatalf(ctx context.Context, format string, v ...interface{}) {
+	l.WithContext(ctx).WithTrace().Output(LevelFatal, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Error(v ...interface{}) {
-	l.Output(LevelError, fmt.Sprint(v...))
+func (l *Logger) Error(ctx context.Context, v ...interface{}) {
+	l.WithContext(ctx).WithTrace().Output(LevelError, fmt.Sprint(v...))
 }
 
-func (l *Logger) Errorf(format string, v ...interface{}) {
-	l.Output(LevelError, fmt.Sprintf(format, v...))
+func (l *Logger) Errorf(ctx context.Context, format string, v ...interface{}) {
+	l.WithContext(ctx).WithTrace().Output(LevelError, fmt.Sprintf(format, v...))
 }
 
 /*
 seed log by wechat webhook
 */
-func (l *Logger) Info4Webhook(v ...interface{}) string {
-	return l.Output4Webhook(LevelInfo, fmt.Sprint(v...))
+func (l *Logger) Info4Webhook(ctx context.Context, v ...interface{}) string {
+	return l.WithContext(ctx).WithTrace().Output4Webhook(LevelInfo, fmt.Sprint(v...))
 }
 
-func (l *Logger) Infof4Webhook(format string, v ...interface{}) string {
-	return l.Output4Webhook(LevelInfo, fmt.Sprintf(format, v...))
+func (l *Logger) Infof4Webhook(ctx context.Context, format string, v ...interface{}) string {
+	return l.WithContext(ctx).WithTrace().Output4Webhook(LevelInfo, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Fatal4Webhook(v ...interface{}) string {
-	return l.Output4Webhook(LevelFatal, fmt.Sprint(v...))
+func (l *Logger) Fatal4Webhook(ctx context.Context, v ...interface{}) string {
+	return l.WithContext(ctx).WithTrace().Output4Webhook(LevelFatal, fmt.Sprint(v...))
 }
 
-func (l *Logger) Fatalf4Webhook(format string, v ...interface{}) string {
-	return l.Output4Webhook(LevelFatal, fmt.Sprintf(format, v...))
+func (l *Logger) Fatalf4Webhook(ctx context.Context, format string, v ...interface{}) string {
+	return l.WithContext(ctx).WithTrace().Output4Webhook(LevelFatal, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Error4Webhook(v ...interface{}) string {
-	return l.Output4Webhook(LevelError, fmt.Sprint(v...))
+func (l *Logger) Error4Webhook(ctx context.Context, v ...interface{}) string {
+	return l.WithContext(ctx).WithTrace().Output4Webhook(LevelError, fmt.Sprint(v...))
 }
-func (l *Logger) Errorf4Webhook(format string, v ...interface{}) string {
-	return l.Output4Webhook(LevelError, fmt.Sprintf(format, v...))
+func (l *Logger) Errorf4Webhook(ctx context.Context, format string, v ...interface{}) string {
+	return l.WithContext(ctx).WithTrace().Output4Webhook(LevelError, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Output4Webhook(level Level, message string) string {

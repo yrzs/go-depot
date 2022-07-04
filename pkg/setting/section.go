@@ -16,6 +16,11 @@ type AppSettingS struct {
 	LogFileName           string
 	LogFileExt            string
 	DefaultContextTimeout time.Duration
+	OpenTracing           struct {
+		ServiceName string
+		AgentHost   string
+		AgentPort   string
+	}
 }
 
 type DatabaseSettingS struct {
