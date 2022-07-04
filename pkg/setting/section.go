@@ -40,8 +40,10 @@ type ApiClientSettingS struct {
 	HttpSignValidity     bool
 	HttpSignExpire       int64
 	HttpSignAccount      struct {
-		Key    string
-		Secret string
+		Key        string
+		Secret     string
+		SignName   string
+		ExpireName string
 	}
 }
 

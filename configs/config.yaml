@@ -33,6 +33,8 @@ ApiClient: # api配置
   HttpSignAccount:
     Key: f29388d280554040
     Secret: 756fcebffbe983d7
+    SignName: __sign
+    ExpireName: __time
 Wechat: # 微信配置
   Work: # 企微
     WebHook:

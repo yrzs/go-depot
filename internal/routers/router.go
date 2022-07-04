@@ -10,10 +10,10 @@ import (
 )
 
 var methodLimiters = limiter.NewMethodLimiter().AddBuckets(limiter.LimiterBucketRule{
-	Key:          "/api",     //自定义键值对名称
+	Key:          "/api",      //自定义键值对名称
 	FillInterval: time.Second, //间隔多久时间放 N 个令牌
-	Capacity:     10,        //令牌桶的容量
-	Quantum:      10,        //每次到达间隔时间后所放的具体令牌数量
+	Capacity:     10,          //令牌桶的容量
+	Quantum:      10,          //每次到达间隔时间后所放的具体令牌数量
 })
 
 func NewRouter() *gin.Engine {

@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-depot/global"
 	"go-depot/pkg/app"
@@ -28,16 +27,17 @@ func Sign() gin.HandlerFunc {
 			var sign, signStr, calcSign string
 			var keys []string
 			for k, v := range ctx.Request.Form {
-				fmt.Println(k, v[0])
-				if k == "__sign" {
+				if k == global.ApiClientSetting.HttpSignAccount.SignName {
 					sign = v[0]
 				} else {
 					queryMap[k] = v[0]
 					keys = append(keys, k)
 				}
 			}
-			if time.Now().Unix()-convert.StrTo(queryMap["__time"]).MustInt64() > global.ApiClientSetting.HttpSignExpire {
-				ecode = errcode.SignTimeOut
+			if !utils.IsEmpty(queryMap[global.ApiClientSetting.HttpSignAccount.ExpireName]) {
+				if time.Now().Unix()-convert.StrTo(queryMap[global.ApiClientSetting.HttpSignAccount.ExpireName]).MustInt64() > global.ApiClientSetting.HttpSignExpire {
+					ecode = errcode.SignTimeOut
+				}
 			}
 			if !utils.IsEmpty(keys) {
 				//排序 ascii
