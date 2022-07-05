@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	opentracingGorm "github.com/yrzs/opentracing-gorm"
 	"go-depot/global"
 	"go-depot/pkg/setting"
 	"time"
@@ -33,7 +34,8 @@ func NewDB(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {
 	// db setting
 	db.DB().SetMaxIdleConns(databaseSetting.MaxIdleConns)
 	db.DB().SetMaxOpenConns(databaseSetting.MaxOpenConns)
-
+	// opentracing注册回调
+	opentracingGorm.AddGormCallbacks(db)
 	return db, nil
 }
 
