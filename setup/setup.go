@@ -1,6 +1,7 @@
 package setup
 
 import (
+	"flag"
 	"go-depot/global"
 	"go-depot/internal/model"
 	"go-depot/pkg/logger"
@@ -8,14 +9,24 @@ import (
 	"go-depot/pkg/tracer"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"log"
+	"strings"
 	"time"
+)
+
+/**
+定义配置
+*/
+var (
+	port    string
+	runMode string
+	config  string
 )
 
 /**
 mapping setting
 */
 func Setting() error {
-	s, err := setting.NewSetting()
+	s, err := setting.NewSetting(strings.Split(config, ",")...)
 	if err != nil {
 		return err
 	}
@@ -40,6 +51,13 @@ func Setting() error {
 	err = s.ReadSection("Wechat", &global.WechatSetting)
 	if err != nil {
 		return err
+	}
+	// 更新flag配置
+	if port != "" {
+		global.ServerSetting.HttpPort = port
+	}
+	if runMode != "" {
+		global.ServerSetting.RunMode = runMode
 	}
 	return nil
 }
@@ -86,5 +104,17 @@ func Tracer() error {
 		return err
 	}
 	global.Tracer = jaegerTracer
+	return nil
+}
+
+/**
+setup run mode
+绑定配置信息
+*/
+func Flag() error {
+	flag.StringVar(&port, "port", "", "启动端口")
+	flag.StringVar(&runMode, "mode", "", "启动模式")
+	flag.StringVar(&config, "config", "", "指定要使用的配置文件路径")
+	flag.Parse()
 	return nil
 }

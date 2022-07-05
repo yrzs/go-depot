@@ -13,6 +13,7 @@ import (
       setting | db | logger
 */
 func init() {
+	_ = setup.Flag() // 配置信息出错了也不要紧
 	err := setup.Setting()
 	if err != nil {
 		log.Fatalf("init.setupSetting err: %v", err)
@@ -42,6 +43,6 @@ func main() {
 	}
 	err := s.ListenAndServe()
 	if err != nil {
-		global.Logger.Fatalf(nil,"main.httpServer err :%v", err)
+		global.Logger.Fatalf(nil, "main.httpServer err :%v", err)
 	}
 }

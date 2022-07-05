@@ -14,6 +14,14 @@ build:
 run:
 	go run main.go
 
+.PHONY: prod
+prod:
+	go run main.go -mode=prod -config=./configs -port=8888
+
+.PHONY: dev
+dev:
+	go run main.go -mode=debug -config=./configs -port=8888
+
 # show help
 help:
 	@echo ''
