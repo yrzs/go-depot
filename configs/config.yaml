@@ -10,10 +10,10 @@ App:
   LogFileName: app
   LogFileExt: .log
   DefaultContextTimeout: 5
-  OpenTracing:
+  OpenTracing: # Jaeger链路追踪
     ServiceName: go-depot
     AgentHost: 192.168.8.69
-    AgentPort: :6831
+    AgentPort: 6831
 Database:
   DBType: mysql
   Username: root

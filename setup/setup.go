@@ -80,7 +80,7 @@ setup tracer(jaeger)
 func Tracer() error {
 	jaegerTracer, _, err := tracer.NewJaegerTracer(
 		global.AppSetting.OpenTracing.ServiceName,
-		global.AppSetting.OpenTracing.AgentHost+global.AppSetting.OpenTracing.AgentPort,
+		global.AppSetting.OpenTracing.AgentHost+":"+global.AppSetting.OpenTracing.AgentPort,
 	)
 	if err != nil {
 		return err
