@@ -7,6 +7,7 @@ import (
 	"go-depot/setup"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"os/signal"
 	"syscall"
@@ -58,6 +59,10 @@ func main() {
 		if err != nil && err != http.ErrServerClosed {
 			global.Logger.Fatalf(nil, "main.httpServer err :%v", err)
 		}
+	}()
+	// pprof
+	go func() {
+		log.Println(http.ListenAndServe(":6060", nil))
 	}()
 	// 等待中断信号
 	// 如果没有正在处理的旧请求，那么在接收到SIGINT/SIGTERM后，其会直接退出（因为不需要等待）
