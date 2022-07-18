@@ -17,6 +17,12 @@ var methodLimiters = limiter.NewMethodLimiter().AddBuckets(limiter.LimiterBucket
 })
 
 func NewRouter() *gin.Engine {
+	// 在new前设置才能生效
+	if global.ServerSetting.RunMode == "debug" {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	r := gin.New()
 	r.Use(middleware.Tracing()) // 链路追踪中间件
 	if global.ServerSetting.RunMode == "debug" {
